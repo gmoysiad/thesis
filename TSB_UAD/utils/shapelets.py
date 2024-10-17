@@ -36,6 +36,9 @@ def extract_shapelets(dataset, shapelet_size, num_shapelets, random_state=None):
     - shapelets: list of numpy arrays representing shapelets
     """
     rng = check_random_state(random_state)
+
+    dataset = np.asarray(dataset).reshape(-1, 1)  # Reshape to (n_samples, 1)
+
     n_samples, series_length = dataset.shape
     shapelets = []
     
