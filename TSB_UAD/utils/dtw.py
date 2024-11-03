@@ -20,4 +20,4 @@ def compute_dtw_distance(X, Y):
     Y = np.asarray(Y).reshape(-1, 1)
 
     distance, _ = fastdtw(X, Y, dist=euclidean)
-    return distance
+    return round(distance,3)
