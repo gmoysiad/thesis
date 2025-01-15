@@ -111,6 +111,9 @@ class CustomLstm:
         
         self.decision_scores_ = score
         return self
+    
+    def predict(self, X):
+        pass
 
     def predict_proba(self, X, method='linear', measure=None):
         """Predict the probability of a sample being outlier. Two approaches
@@ -135,7 +138,7 @@ class CustomLstm:
             outlier probability, ranging in [0,1].
         """
 
-        check_is_fitted(self, ['decision_scores_', 'threshold_', 'labels_'])
+        # check_is_fitted(self, ['decision_scores_', 'threshold_', 'labels_'])
         train_scores = self.decision_scores_
 
         self.fit(X)
