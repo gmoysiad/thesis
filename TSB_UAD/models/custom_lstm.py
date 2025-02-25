@@ -21,7 +21,7 @@ class CustomLstm:
         self.epochs = epochs
         self.patience = patience
         self.verbose = verbose
-        self.model_name = 'Custom LSTM'
+        self.model_name = 'Custom AutoEncoder LSTM'
         self.X_train_ = None
         self.Y = None
         self.estimation = None
@@ -34,6 +34,7 @@ class CustomLstm:
         self.y_train = None
         self.X_test = None
         self.y_test = None
+        self.es = None
 
     def fit(self, X_clean, X_dirty, ratio=0.15):
         slidingwindow = self.slidingwindow
@@ -57,10 +58,10 @@ class CustomLstm:
         self.model.add(tf.keras.layers.TimeDistributed(Dense(predict_time_steps)))
         self.model.compile(loss='mean_squared_error', optimizer='adam')
         
-        es = EarlyStopping(monitor='val_loss', mode='min', verbose=self.verbose, patience=self.patience)
+        self.es = EarlyStopping(monitor='val_loss', mode='min', verbose=self.verbose, patience=self.patience)
         
         self.model.fit(self.X_train, self.y_train, validation_split=ratio, epochs=self.epochs, batch_size=64,
-                       verbose=self.verbose, callbacks=[es])
+                       verbose=self.verbose, callbacks=[self.es])
         
         prediction = self.model.predict(self.X_test)
 
@@ -112,8 +113,25 @@ class CustomLstm:
         self.decision_scores_ = score
         return self
     
-    def predict(self, X):
-        pass
+    def prediction(self, X_clean, X_dirty):
+        slidingwindow = self.slidingwindow
+        predict_time_steps = self.predict_time_steps
+        self.n_test_ = len(X_dirty)
+
+        self.X_train, self.y_train = self.create_dataset(X_clean, slidingwindow, predict_time_steps)
+        self.X_test, self.y_test = self.create_dataset(X_dirty, slidingwindow, predict_time_steps)
+
+        self.X_train = self.X_train.reshape((self.X_train.shape[0], self.X_train.shape[1], 1))
+        self.X_test = self.X_test.reshape((self.X_test.shape[0], self.X_test.shape[1], 1))
+        
+        prediction = self.model.predict(self.X_test)
+
+        self.Y = self.y_test
+        self.estimation = prediction
+        self.estimator = self.model
+        self.n_initial = self.X_train.shape[0]
+        
+        return self
 
     def predict_proba(self, X, method='linear', measure=None):
         """Predict the probability of a sample being outlier. Two approaches

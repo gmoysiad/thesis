@@ -4,6 +4,7 @@ import numpy as np
 
 import matplotlib.patches as mpatches 
 import matplotlib.pyplot as plt
+from matplotlib.transforms import Bbox
 
 from ..vus.utils.metrics import metricor
 
@@ -22,7 +23,7 @@ def plotFig(data, label, score, slidingWindow, fileName, modelName, plotRange=No
     if plotRange==None:
         plotRange = [0, max_length]
     
-    plt.plot(data[:max_length], 'k')
+    # plt.plot(data[:max_length], 'k')
     
     fig3 = plt.figure(figsize=(12, 10), constrained_layout=True)
     gs = fig3.add_gridspec(3, 4)
@@ -64,11 +65,14 @@ def plotFig(data, label, score, slidingWindow, fileName, modelName, plotRange=No
 
     f3_ax4 = fig3.add_subplot(gs[0, -1])
     plt.plot(fpr, tpr)
-    # plt.plot(R_fpr,R_tpr)
-    # plt.title('R_AUC='+str(round(R_AUC,3)))
+    plt.plot(R_fpr,R_tpr)
+    plt.title('R_AUC='+str(round(R_AUC,3))+', AUC='+str(L1[0]))
     plt.xlabel('FPR')
     plt.ylabel('TPR')
-    # plt.legend(['ROC','Range-ROC'])
+    plt.legend(['ROC','Range-ROC'])
+
+    extent = full_extent(f3_ax1).transformed(fig3.dpi_scale_trans.inverted())
+    fig3.savefig(fileName+'_'+modelName+'_scoring_plot_figure.png', bbox_inches=extent)
 
     plt.suptitle(fileName + '    window='+str(slidingWindow) +'   '+ modelName
     +'\nAUC='+L1[0]+'     R_AUC='+str(round(R_AUC,2))+'     Precision='+ L1[1]+ '     Recall='+L1[2]+'     F='+L1[3]
@@ -76,4 +80,14 @@ def plotFig(data, label, score, slidingWindow, fileName, modelName, plotRange=No
     +'\nAP='+str(round(AP,2))+'     R_AP='+str(round(R_AP,2))+'     Precision@k='+L1[9]+'     Rprecision='+L1[7] + '     Rrecall='+L1[4] +'    Rf='+L1[8]
     )
     
-        
+
+def full_extent(ax, pad=0.0):
+    """Get the full extent of an axes, including axes labels, tick labels, and titles."""
+    # For text objects, we need to draw the figure first, otherwise the extents are undefined.
+    ax.figure.canvas.draw()
+    items = ax.get_xticklabels() + ax.get_yticklabels() 
+    # items += [ax, ax.title, ax.xaxis.label, ax.yaxis.label]
+    items += [ax, ax.title]
+    bbox = Bbox.union([item.get_window_extent() for item in items])
+
+    return bbox.expanded(1.0 + pad, 1.0 + pad)  

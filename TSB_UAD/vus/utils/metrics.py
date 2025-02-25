@@ -56,7 +56,7 @@ class metricor:
         score = 0 
         start = Anomolyrange[0]
         end = Anomolyrange[1]
-        print(start, end)
+        # print(start, end)
         for i in Prange:
             if not(i[1]<start or i[0]>end):
                 score+=1
@@ -95,8 +95,8 @@ class metricor:
         auc = metrics.roc_auc_score(label, score)
         if plot_ROC:
             fpr, tpr, thresholds  = metrics.roc_curve(label, score)
-            display = metrics.RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=auc)
-            display.plot()            
+            # display = metrics.RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=auc)
+            # display.plot()            
 
         #precision, recall, F
         preds = score > (np.mean(score)+coeff*np.std(score))  
@@ -106,7 +106,7 @@ class metricor:
                 preds = score > (np.mean(score)+1*coeff*np.std(score)/3) 
                 if np.any(preds):
                     preds = score > (np.mean(score) + 1*np.std(score))
-    
+        
         Precision, Recall, F, Support = metrics.precision_recall_fscore_support(label, preds, zero_division=0)
         precision = Precision[1]
         recall = Recall[1]
@@ -114,7 +114,7 @@ class metricor:
 
         #range based anomaly 
         Rrecall, ExistenceReward, OverlapReward = self.range_recall_new(label, preds, alpha)
-        Rprecision = self.range_recall_new(preds, label, 0)[0]
+        Rprecision = self.range_recall_new(preds, label, 0)[0]        
         
         if Rprecision + Rrecall==0:
             Rf=0

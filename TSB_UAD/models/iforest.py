@@ -82,7 +82,7 @@ class IForest(DetectorB):
                  max_features=1.,
                  bootstrap=False,
                  n_jobs=1,
-                 random_state=None,
+                 random_state=0,
                  verbose=0):
                 
         self.contamination = contamination
@@ -132,6 +132,20 @@ class IForest(DetectorB):
 
         # invert decision_scores_. Outliers comes with higher outlier scores.
         self.decision_scores_ = -self.detector_.score_samples(X)
+        return self
+    
+    def prediction(self, X):
+        try: 
+            X = check_array(X)
+        except:
+            X = X.reshape(-1, 1)
+        X = check_array(X)
+
+        _ = self.detector_.predict(X)
+        
+        # invert decision_scores_. Outliers comes with higher outlier scores.
+        self.decision_scores_ = -self.detector_.score_samples(X)
+
         return self
 
     def decision_function(self, X):

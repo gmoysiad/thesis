@@ -1,0 +1,67 @@
+MGAB_add_point_outlier_002_10
+		mmd_value	dwt_value
+mmd_value	1.000000	0.101937
+dwt_value	0.101937	1.000000
+
+MGAB_add_point_outlier_002_01
+		mmd_value	dwt_value
+mmd_value	1.000000	0.011064
+dwt_value	0.011064	1.000000
+
+MGAB_add_point_outlier_002_02.test.out_20250108_215113.csv
+		mmd_value	dwt_value
+mmd_value	1.00000		0.01086
+dwt_value	0.01086		1.00000
+
+MGAB_add_point_outlier_002_03.test.out_20250108_215113.csv
+		mmd_value	dwt_value
+mmd_value	1.000000	0.011047
+dwt_value	0.011047	1.000000
+
+MGAB_add_point_outlier_002_04.test.out_20250108_215112.csv
+		mmd_value	dwt_value
+mmd_value	1.000000	0.010543
+dwt_value	0.010543	1.000000
+
+MGAB_add_point_outlier_002_05.test.out_20250108_215112.csv
+		mmd_value	dwt_value
+mmd_value	1.000000	0.010825
+dwt_value	0.010825	1.000000
+
+MGAB_add_random_walk_trend_0.1_1.test.out
+		mmd_value	dwt_value
+mmd_value	1.000000	-0.005666
+dwt_value	-0.005666	1.000000
+
+MGAB_add_random_walk_trend_0.1_2.test.out
+		mmd_value	dwt_value
+mmd_value	1.000000	-0.005672
+dwt_value	-0.005672	1.000000
+
+MGAB_add_random_walk_trend_0.1_3.test.out
+		mmd_value	dwt_value
+mmd_value	1.000000	-0.014906
+dwt_value	-0.014906	1.000000
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
